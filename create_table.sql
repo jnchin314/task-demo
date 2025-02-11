@@ -1,9 +1,9 @@
-CREATE DATABASE demos;
 GRANT ALL PRIVILEGES ON DATABASE demos TO postgres;
 
 \c demos;
-
 CREATE SCHEMA todo;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA todo TO postgres;
 
 CREATE TYPE status_enum AS ENUM ('created', 'in_progress', 'done');
 
