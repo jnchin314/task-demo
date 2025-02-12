@@ -3,10 +3,13 @@ package com.demo.todo.dto;
 import com.demo.todo.entity.Status;
 import com.demo.todo.entity.Task;
 
+import java.util.UUID;
+
 public class TaskDTO {
     String name;
     String description;
     Status status;
+    UUID id;
 
     public TaskDTO() {
     }
@@ -15,6 +18,7 @@ public class TaskDTO {
         this.name = task.getName();
         this.status = task.getStatus();
         this.description = task.getDescription();
+        this.id = task.getUuid();
     }
 
     public String getName() {
@@ -39,5 +43,13 @@ public class TaskDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

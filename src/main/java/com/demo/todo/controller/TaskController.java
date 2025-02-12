@@ -14,7 +14,7 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @GetMapping("/getTasks")
+    @GetMapping("/tasks")
     public List<TaskDTO> getTasks(){
         return taskService.getAllTasks().stream().map(task -> convertEntityToDTO(task)).collect(Collectors.toList());
     }
