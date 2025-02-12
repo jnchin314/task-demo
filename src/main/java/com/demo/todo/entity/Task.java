@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Table(name = "task", schema = "todo")
 public class Task {
 
+    public Task() {
+    }
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
@@ -20,7 +23,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
 
     @Column(length = 50)

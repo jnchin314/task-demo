@@ -1,0 +1,40 @@
+package com.demo.todo.controller;
+
+import com.demo.todo.entity.Task;
+import com.demo.todo.dto.TaskDTO;
+import com.demo.todo.service.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+public class TaskController {
+    @Autowired
+    TaskService taskService;
+
+    @GetMapping("/getTasks")
+    public List<TaskDTO> getTasks(){
+        return taskService.getAllTasks().stream().map(task -> convertEntityToDTO(task)).collect(Collectors.toList());
+    }
+
+
+    @PostMapping("/task")
+    public String createTask(@RequestBody TaskDTO taskDTO) {
+        Task newTask = convertDTOtoEntity(taskDTO);
+         taskService.createTask(newTask);
+        return "created";
+    }
+
+    private static TaskDTO convertEntityToDTO(Task task){
+        return new TaskDTO(task);
+    }
+
+    //Look into MapStruct or ModelMapper
+    private Task convertDTOtoEntity(TaskDTO task){
+        return new Task(task.getName(), task.getDescription());
+    }
+
+
+}
