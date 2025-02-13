@@ -9,6 +9,7 @@ import com.demo.todo.repository.TaskRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 
@@ -23,6 +24,19 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElse(null);
+    }
+
+    public Task getTaskByUUID(UUID uuid) {
+
+        List<Task> taskList = taskRepository.findByUuid(uuid);
+        if(taskList.isEmpty()){
+            return null;
+        }else if(taskList.size() == 1){
+            return taskList.get(0);
+        }else{
+            //Should throw an exception
+            return null;
+        }
     }
 
     public List<Task> getTasks(Optional<Status> status) {

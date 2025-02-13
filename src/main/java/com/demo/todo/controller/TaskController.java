@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -18,23 +19,32 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public List<TaskDTO> getTasks(@RequestParam(value = "status", required = false) Status status) {
+        return convertEntitiestoDTOList(taskService.getTasks(Optional.ofNullable(status)));
+    }
 
-        return taskService.getTasks(Optional.ofNullable(status))
-                .stream().map(TaskController::convertEntityToDTO)
-                .collect(Collectors.toList());
+    @GetMapping("/tasks/{taskId}")
+    public TaskDTO createTask(@PathVariable UUID taskId) {
+        Task task = taskService.getTaskByUUID(taskId);
+        TaskDTO taskDTO = convertEntityToDTO(task);
+        return taskDTO;
     }
 
     @PostMapping("/task")
-    public String createTask(@RequestBody TaskDTO taskDTO) {
+    public String createTask(@RequestBody(required = true) TaskDTO taskDTO) {
         Task newTask = convertDTOtoEntity(taskDTO);
         taskService.createTask(newTask);
         return "created";
     }
 
-    private static TaskDTO convertEntityToDTO(Task task) {
+    //These should be in a util file of some sort
+    public static TaskDTO convertEntityToDTO(Task task) {
         return new TaskDTO(task);
     }
 
+    public static List<TaskDTO> convertEntitiestoDTOList(List<Task> taskList){
+        return taskList.stream().map(TaskController::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
     //Look into MapStruct or ModelMapper
     private Task convertDTOtoEntity(TaskDTO task) {
         return new Task(task.getName(), task.getDescription());

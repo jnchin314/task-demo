@@ -8,9 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository("taskRepository")
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByStatus(Status status);
+    List<Task> findByUuid(UUID uuid);
 }

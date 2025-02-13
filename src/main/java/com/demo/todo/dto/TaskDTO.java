@@ -2,14 +2,16 @@ package com.demo.todo.dto;
 
 import com.demo.todo.entity.Status;
 import com.demo.todo.entity.Task;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.UUID;
 
+@JsonPropertyOrder({"id"})
 public class TaskDTO {
+    UUID id;
     String name;
     String description;
     Status status;
-    UUID id;
 
     public TaskDTO() {
     }
