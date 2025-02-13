@@ -2,13 +2,13 @@
 
 # Set variables
 PROJECT_NAME="your-project-name"
-IMAGE_NAME="unemploymenttracker"
+IMAGE_NAME="todo_demo"
 DOCKER_COMPOSE_FILE="compose.yaml"
 
 # Build Maven project
 echo "Building Maven project..."
 pwd
-./mvnw clean package -DskipTests
+./mvnw clean package
 
 # Check if Maven build was successful
 if [ $? -ne 0 ]; then

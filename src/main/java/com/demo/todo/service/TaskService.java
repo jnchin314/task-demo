@@ -1,5 +1,6 @@
 package com.demo.todo.service;
 
+import com.demo.todo.entity.Status;
 import com.demo.todo.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.demo.todo.repository.TaskRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -23,8 +25,12 @@ public class TaskService {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getTasks(Optional<Status> status) {
+        if(status.isEmpty()) {
+            return taskRepository.findAll();
+        }else{
+            return taskRepository.findByStatus(status.get());
+        }
     }
 
     public Task updateTask(Long id, Task updatedTask) {

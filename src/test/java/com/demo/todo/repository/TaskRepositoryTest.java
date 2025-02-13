@@ -4,17 +4,15 @@ import com.demo.todo.entity.Task;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @AutoConfigureTestEntityManager
@@ -42,7 +40,6 @@ public class TaskRepositoryTest {
     }
 
     @Test
-    @Transactional
     public void givenNameUpdate_whenSave_thenReturnUpdatedTask() {
         String name = "task name";
         String someOtherName = "some other name";
@@ -51,6 +48,7 @@ public class TaskRepositoryTest {
 
         Task task = new Task(name, description);
         entityManager.persistAndFlush(task);
+        System.out.println(entityManager.find(Task.class, 1));
 
         Optional<Task> foundTask = taskRepository.findById(task.getId());
         assertThat(foundTask).isPresent();
@@ -58,8 +56,7 @@ public class TaskRepositoryTest {
         foundTask.get().setName(someOtherName);
         taskRepository.saveAndFlush(foundTask.get());
 
-
-        Task modifiedTask = entityManager.find(Task.class, 1L);
-        assertEquals(someOtherName, modifiedTask.getName());
+        Optional<Task> modifiedTask = taskRepository.findById(task.getId());
+        assertEquals(someOtherName, modifiedTask.get().getName());
     }
 }
